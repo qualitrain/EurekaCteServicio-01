@@ -1,0 +1,88 @@
+Notas de migración: 
+
+Cambios:
+
+1. Se copiaron css, imágenes y jsps a webapp
+2. Se agregaron dependencias para manejo de jsp y json
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.json</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+	     <dependency>
+	         <groupId>org.apache.tomcat.embed</groupId>
+	         <artifactId>tomcat-embed-jasper</artifactId>
+	         <scope>provided</scope>
+	      </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+		</dependency>
+3. Se creó un web.xml para spec servlet 3.1
+4. Se copió contenido web.xml de proyecto origen (rest05-apiCliente02)
+5. Se configuraron propiedades de la app considerando eureka
+6. Se copiaron paquetes de código java
+7. Se renombraron los paquetes para que todos fueran subpaquetes de org.qtx
+8. Se añadieron bitácoras para monitoreo
+9. Se adecuaron los nombres calificados de los servlets en el web.xml
+10. Se movieron los jsps al interior de WEB-INF y se adecuaron las invocaciones en los servlets
+11. FUNCIONA BIEN CUANDO ES DESPLEGADO EN TOMCAT, pero falla cuando se ejecuta independientemente
+
+12. Se modificó el pom.xml, actualizando el plugin (se adicionó el nodo executions):
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+ 12. Sigue sin funcionar.
+ 13. Revisando el ejercicio hecho vs un ejemplo de internet, tenemos
+     las siguientes diferencias:
+     a)El ejemplo de internet no tiene web.xml
+     b)Tampoco tiene servlets, sino puros controladores
+     c)Concentra los jsps dentro de una carpetas jsp adentro de WEB-INF
+ 14. Se renombró el web.xml para remplazarlo por configuración con anotaciones
+   a) Se creo un index.html y se puso bajo webapps con una redirección via etiqueta <meta http-equiv="refresh" ..>
+   b) Se colocaron anotaciones @WebServlet
+   c) Re renombró index.jsp como menu.jsp y se actualizaron referencias a él en los jsps y en los servlets
+   d) Se agrego @ServletComponentScan("org.qtx.web") a la clase principal
+   e) Se movieron los jsps a una carpeta jsp dentro de WEB-INF
+ 15. Funciona tanto desplegándolo en tomcat y ejecutándolo con run as->Spring Boot App, pero
+     al generar su war y correrlo con java -jar app.war 
+     manda la excepción:
+     NoSuchMethodError: MultivaluedMap.addAll in Jersey Client
+     
+     Este es causado por un conflicto entre Eureka-Client y Jersey-Cliente ante la ausencia de la liberría correcta cuando se
+     usa el modo de tomcat embbeded
+    
+ 16. Se agregó la dependencia siguiente como provided:
+ 		<dependency>
+		    <groupId>org.glassfish.jersey.core</groupId>
+		    <artifactId>jersey-client</artifactId>
+			<scope>provided</scope>
+		</dependency>		
+ 17. Funcionó!!
+ 18. Se rediseño separando una capa que corresponde al cliente Jax-Rs
+ 19. Se implementó el descubrimiento del servicio:
+ a) Se comentó la propiedad #eureka.client.enabled=false en application.properties
+ b) Se dieron de alta propiedades personalizadas para el descubrimiento del servicio y su invocación vía el cliente de Jax-Rs:
+	qtx.servicioArticulo=ArticuloRest
+	qtx.servicioArticulo.uriDefault=http://localhost:8080/
+	qtx.servicioArticulo.context-path=rest02
+	qtx.servicioArticulo.rest-application-path=webapi
+	qtx.servicioArticulo.recurso-articulo=articulo
+	qtx.servicioArticulo.sufijoTodos=todos
+ c) Se agregó @EnableEurekaClient (Se supone que no es necesario, pero no lograba instanciar el cliente Eureka)
+ d) Se creo la clase org.qtx.config.Configuracion para crear un bean que envolviera al cliente Eureka y facilitara su uso.
+    El bean corresponde a la clase org.qtx.web.cteRest.InfoServicios
+
+ 
+     
+
+
+
