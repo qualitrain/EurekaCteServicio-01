@@ -1,4 +1,4 @@
-package org.qtx.web.cteRest;
+package org.qtx.web.cteRest.jaxrs;
 
 import java.io.StringReader;
 import java.util.List;
@@ -18,15 +18,18 @@ import javax.ws.rs.core.Form;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
+import org.qtx.config.InfoServicios;
 import org.qtx.dominio.Articulo;
 import org.qtx.web.cte.CteException;
 import org.qtx.web.cte.ICteRestArticulo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
+//@Primary
 public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	@Autowired
 	private InfoServicios infoServicios;

@@ -1,4 +1,4 @@
-package org.qtx.web.cteRest;
+package org.qtx.web.cteRest.jaxrs;
 
 import java.util.List;
 

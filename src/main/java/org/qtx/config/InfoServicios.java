@@ -1,4 +1,4 @@
-package org.qtx.web.cteRest;
+package org.qtx.config;
 
 import java.util.List;
 
@@ -26,6 +26,11 @@ public class InfoServicios {
 
 	public InfoServicios() {
 		super();
+	}
+	public InfoServicios(String appName, String uriDefault) {
+		super();
+		this.appName = appName;
+		this.uriDefault = uriDefault;
 	}
 	public InfoServicios(EurekaClient cteEureka, String appName, String uriDefault) {
 		super();

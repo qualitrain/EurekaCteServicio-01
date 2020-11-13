@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.qtx.config.InfoServicios;
 import org.qtx.dominio.Articulo;
 import org.qtx.web.cte.CteException;
 import org.qtx.web.cte.ICteRestArticulo;
-import org.qtx.web.cteRest.InfoServicios;
 import org.qtx.web.util.UtilWeb;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

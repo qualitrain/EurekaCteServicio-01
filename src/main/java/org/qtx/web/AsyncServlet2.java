@@ -55,6 +55,13 @@ public class AsyncServlet2 extends HttpServlet {
 		case "espera.jsp":
 			switch (operacion){
 				case "leerResultado":
+					if(this.respuestas.isEmpty()) {
+						request.setAttribute("mensaje", "Error: No se han hecho peticiones asíncronas");
+						request.setAttribute("respuesta", "");
+						request.setAttribute("boton", "hidden");
+						this.invocar("/espera.jsp", request, response);
+						return;
+					}
 					String strfolio = request.getParameter("folio");
 					int folio = Integer.parseInt(strfolio);
 					String respuesta = this.respuestas.get(folio);

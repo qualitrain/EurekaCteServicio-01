@@ -1,14 +1,15 @@
 package org.qtx.config;
-import org.qtx.web.cteRest.CteRestArticuloJaxRs2;
-import org.qtx.web.cteRest.InfoServicios;
+import org.qtx.web.cteRest.jaxrs.CteRestArticuloJaxRs2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.web.client.RestTemplate;
 
 import com.netflix.discovery.EurekaClient;
 
@@ -34,7 +35,7 @@ public class Configuracion {
 	public Configuracion() {
 		bitacora.info(" Configuracion() intanciado");
 	}
-	@Bean
+//	@Bean
 	public InfoServicios getInfoServicios(EurekaClient cteEureka) {
 		InfoServicios infoServicios = new InfoServicios(cteEureka, appName, uriDefault);
 		infoServicios.setContexPath(contexPath);
@@ -43,8 +44,7 @@ public class Configuracion {
 		infoServicios.setSufijoTodos(sufijoTodos);
 		return infoServicios;
 	}
-	@Bean
-	@Primary
+//	@Bean
 	public InfoServicios getInfoServicios(EurekaClient cteEureka, LoadBalancerClient balanceador) {
 		InfoServicios infoServicios = new InfoServicios(cteEureka, balanceador, appName, uriDefault);
 		bitacora.info("InfoServicios instanciado (balanceador = " + balanceador);
@@ -53,6 +53,23 @@ public class Configuracion {
 		infoServicios.setRecursoArticulo(recursoArticulo);
 		infoServicios.setSufijoTodos(sufijoTodos);
 		return infoServicios;
+	}
+	@Bean
+	@Primary
+	public InfoServicios getInfoServicios() {
+		InfoServicios infoServicios = new InfoServicios(appName, uriDefault);
+		bitacora.info("InfoServicios instanciado -sin cte Eureka ni Balanceador");
+		infoServicios.setContexPath(contexPath);
+		infoServicios.setRestApplicationPath(restApplicationPath);
+		infoServicios.setRecursoArticulo(recursoArticulo);
+		infoServicios.setSufijoTodos(sufijoTodos);
+		return infoServicios;
+	}
+	
+	@Bean
+	@LoadBalanced
+	public RestTemplate getRestTemplate() {
+		return new RestTemplate();
 	}
 
 }
