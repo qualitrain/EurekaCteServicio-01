@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.PreDestroy;
 
 import org.slf4j.Logger;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
@@ -12,6 +14,8 @@ import com.netflix.discovery.shared.Application;
 
 public class InfoServicios {
 	private EurekaClient cteEureka;
+	private LoadBalancerClient balanceadorCarga;
+	
 	private String appName;
 	private String uriDefault;
 	private String contexPath;
@@ -29,11 +33,24 @@ public class InfoServicios {
 		this.appName = appName;
 		this.uriDefault = uriDefault;
 	}
+	public InfoServicios(EurekaClient cteEureka, LoadBalancerClient balancer, String appName, String uriDefault) {
+		super();
+		this.cteEureka = cteEureka;
+		this.balanceadorCarga = balancer;
+		this.appName = appName;
+		this.uriDefault = uriDefault;
+	}
 	public EurekaClient getCteEureka() {
 		return cteEureka;
 	}
 	public void setCteEureka(EurekaClient cteEureka) {
 		this.cteEureka = cteEureka;
+	}
+	public LoadBalancerClient getBalanceadorCarga() {
+		return balanceadorCarga;
+	}
+	public void setBalanceadorCarga(LoadBalancerClient balanceadorCarga) {
+		this.balanceadorCarga = balanceadorCarga;
 	}
 	public void setAppName(String appName) {
 		this.appName = appName;
@@ -98,8 +115,16 @@ public class InfoServicios {
 		nInvocacion++;
 		return "http://" + instancia.getHostName() + ":" + instancia.getPort() + "/";
 	}
+	public String getUriServicioBalanceado() {
+		ServiceInstance instancia = this.balanceadorCarga.choose(appName);
+		nInvocacion++;
+		return "http://" + instancia.getHost() + ":" + instancia.getPort() + "/";
+	}
 	public String getUriRecursoArticulo() {
 		return this.getUriServicio() + this.getContexPath() + "/" + this.getRestApplicationPath() + "/" + this.getRecursoArticulo();
+	}
+	public String getUriRecursoArticuloBalanceado() {
+		return this.getUriServicioBalanceado() + this.getContexPath() + "/" + this.getRestApplicationPath() + "/" + this.getRecursoArticulo();
 	}
 	public String getUriRecursoArticuloTodos() {
 		return this.getUriRecursoArticulo() 

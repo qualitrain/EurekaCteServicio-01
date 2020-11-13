@@ -49,7 +49,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	public Articulo getRemoto_ArticuloJsonXml(String cveArt) {
 		String uriArticulo = "";
 		try {
-			uriArticulo = infoServicios.getUriRecursoArticulo();
+//			uriArticulo = infoServicios.getUriRecursoArticulo();
+			uriArticulo = infoServicios.getUriRecursoArticuloBalanceado();
 			Articulo articulo = this.cteJaxRs
 					  				.target(uriArticulo)
 					  				.path(cveArt)	
@@ -73,7 +74,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	public String getRemoto_ArticuloText(String cveArt) {
 		String uriArticulo = "";
 		try {
-			uriArticulo = infoServicios.getUriRecursoArticulo();
+//			uriArticulo = infoServicios.getUriRecursoArticulo();
+			uriArticulo = infoServicios.getUriRecursoArticuloBalanceado();
 			String cadArticulo = this.cteJaxRs
 					  				 .target(uriArticulo)
 					  				 .path(cveArt)
@@ -97,7 +99,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	public Map<String, String> getRemoto_ArticulosJsonXml() {
 		String uriArticulos = "";
 		try {
-			uriArticulos = infoServicios.getUriRecursoArticuloTodos();
+//			uriArticulos = infoServicios.getUriRecursoArticuloTodos();
+			uriArticulos = infoServicios.getUriRecursoArticuloBalanceado();
 			String cadArticulosJson = this.cteJaxRs
 					                      .target(uriArticulos)
 //			                              .request(MediaType.APPLICATION_XML)
@@ -119,7 +122,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	public Map<String, String> getRemoto_ArticulosJsonXml2() {
 		String uriArticulos = "";
 		try {
-			uriArticulos = infoServicios.getUriRecursoArticuloTodos();
+//			uriArticulos = infoServicios.getUriRecursoArticuloTodos();
+			uriArticulos = infoServicios.getUriRecursoArticuloBalanceado();
 			List<Articulo> articulos = this.cteJaxRs
 					                       .target(uriArticulos)
 //			                         	   .request(MediaType.APPLICATION_XML)
@@ -155,7 +159,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	}
 	
 	public String postRemoto_ArticuloJson(Articulo artI) {
-		String uriArticulo = infoServicios.getUriRecursoArticulo();
+//		String uriArticulo = infoServicios.getUriRecursoArticulo();
+		String uriArticulo = infoServicios.getUriRecursoArticuloBalanceado();
 		try {
 			Entity<Articulo> bodyPeticion = Entity.entity(artI, MediaType.APPLICATION_JSON);
 			String resultadoInsert = this.cteJaxRs
@@ -178,7 +183,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	}
 
 	public String postRemoto_ArticuloFormUrlEncoded(HttpServletRequest request) {
-		String uriArticulo = infoServicios.getUriRecursoArticulo();
+//		String uriArticulo = infoServicios.getUriRecursoArticulo();
+		String uriArticulo = infoServicios.getUriRecursoArticuloBalanceado();
 		try {
 			Entity<Form> bodyAltaArticulo = getBodyAltaArticulo(request);
 			String resultadoInsert = this.cteJaxRs
@@ -223,7 +229,8 @@ public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 		}
 		String uriArticulos = null;
 		try {
-			uriArticulos = infoServicios.getUriRecursoArticulo();
+//			uriArticulos = infoServicios.getUriRecursoArticulo();
+			uriArticulos = infoServicios.getUriRecursoArticuloBalanceado();
 	
 			this.cteJaxRs
                 .target(uriArticulos).path("todos_lento")
