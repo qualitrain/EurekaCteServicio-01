@@ -25,6 +25,7 @@ import org.qtx.web.cte.ICteRestArticulo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,7 @@ import org.springframework.stereotype.Component;
 //@Primary
 public class CteRestArticuloJaxRs2 implements ICteRestArticulo{
 	@Autowired
+	@Qualifier("BalanceoApiRibbon")
 	private InfoServicios infoServicios;
 	
 	private static Logger bitacora = LoggerFactory.getLogger(CteRestArticuloJaxRs2.class);

@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.qtx.config.InfoServicios;
 import org.qtx.dominio.Articulo;
 import org.qtx.web.cte.CteException;
 import org.qtx.web.cte.ICteRestArticulo;
@@ -37,8 +36,6 @@ public class TestRestArticuloServlet2 extends HttpServlet {
 	
 	@Autowired
 	private ICteRestArticulo cteRest;
-//	@Autowired
-//	private InfoServicios infoServicios;
 	
 	private static Logger bitacora = LoggerFactory.getLogger(TestRestArticuloServlet2.class);
     

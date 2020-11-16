@@ -22,6 +22,7 @@ import org.qtx.web.cte.ICteRestArticulo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +42,7 @@ public class CteRestArticuloRestTemplate implements ICteRestArticulo {
 	@Autowired
 	private RestTemplate restTemplate;
 	@Autowired
+	@Qualifier("SinEurekaSinRibbon")
 	private InfoServicios infoServicios;
 	
 	public CteRestArticuloRestTemplate() {

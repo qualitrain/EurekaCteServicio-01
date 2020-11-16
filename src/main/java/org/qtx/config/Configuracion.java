@@ -1,8 +1,6 @@
 package org.qtx.config;
-import org.qtx.web.cteRest.jaxrs.CteRestArticuloJaxRs2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
@@ -35,7 +33,7 @@ public class Configuracion {
 	public Configuracion() {
 		bitacora.info(" Configuracion() intanciado");
 	}
-//	@Bean
+	@Bean("ConEurekaSinRibbon")
 	public InfoServicios getInfoServicios(EurekaClient cteEureka) {
 		InfoServicios infoServicios = new InfoServicios(cteEureka, appName, uriDefault);
 		infoServicios.setContexPath(contexPath);
@@ -44,7 +42,7 @@ public class Configuracion {
 		infoServicios.setSufijoTodos(sufijoTodos);
 		return infoServicios;
 	}
-//	@Bean
+	@Bean("BalanceoApiRibbon")
 	public InfoServicios getInfoServicios(EurekaClient cteEureka, LoadBalancerClient balanceador) {
 		InfoServicios infoServicios = new InfoServicios(cteEureka, balanceador, appName, uriDefault);
 		bitacora.info("InfoServicios instanciado (balanceador = " + balanceador);
@@ -54,8 +52,7 @@ public class Configuracion {
 		infoServicios.setSufijoTodos(sufijoTodos);
 		return infoServicios;
 	}
-	@Bean
-	@Primary
+	@Bean("SinEurekaSinRibbon")
 	public InfoServicios getInfoServicios() {
 		InfoServicios infoServicios = new InfoServicios(appName, uriDefault);
 		bitacora.info("InfoServicios instanciado -sin cte Eureka ni Balanceador");
