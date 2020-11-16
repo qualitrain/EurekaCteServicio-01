@@ -1,6 +1,7 @@
 package org.qtx.web.cteRest.restTemplate;
 
 import java.io.StringReader;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +34,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @Primary
 @Component
@@ -122,9 +125,12 @@ public class CteRestArticuloRestTemplate implements ICteRestArticulo {
 	}
 	
 	@Override
+	@HystrixCommand(fallbackMethod = "fbackGetRemoto_ArticuloJsonXml")
 	public Articulo getRemoto_ArticuloJsonXml(String cveArt) {
 		String uriArticulo = this.getUriArticulo() + "/" + cveArt;
 		try {
+			if(Math.random() < 0.5)
+				throw new RuntimeException("Error simulado");
 			Articulo articulo = restTemplate.getForObject(uriArticulo, Articulo.class);
 			bitacora.info(uriArticulo);
 			bitacora.info("getRemoto_ArticuloJsonXml(" + cveArt 
@@ -139,6 +145,12 @@ public class CteRestArticuloRestTemplate implements ICteRestArticulo {
 			bitacora.error(msjError);
 			throw new CteException(msjError,ex);
 		}
+	}
+	
+	public Articulo fbackGetRemoto_ArticuloJsonXml(String cveArt) {
+		bitacora.warn("***** fbackGetRemoto_ArticuloJsonXml(" + cveArt +") *****");
+		Articulo art = new Articulo("999999","Servicio abajo","Servicio desde fallback", new BigDecimal("0.99"), new BigDecimal("9.99"), 0);
+		return art;
 	}
 
 	@Override
